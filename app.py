@@ -33,12 +33,9 @@ st.markdown("""
     /* Remove Streamlit default styling */
     .stApp {
         background-color: white !important;
+        color:black;
     }
     
-    /* Override Streamlit theme colors 
-    .stApp [data-testid="stAppViewContainer"] {
-        background-color: white;
-    }*/
     
     .stApp [data-testid="stSidebar"] {
         background-color: white;
