@@ -49,7 +49,7 @@ st.markdown("""
     
     /* Reset all default colors */
     .stMarkdown, .stText, p, span, div {
-        color: red !important;
+        color: white !important;
     }
     
     /* Sidebar styling */
