@@ -76,7 +76,7 @@ st.markdown("""
     
     /* Selectbox styling */
     .stSelectbox > div > div {
-        background-color: #ffffff !important;
+        background-color:red !important;
         border: 2px solid #e2e8f0 !important;
         border-radius: 8px !important;
         color: black !important;
