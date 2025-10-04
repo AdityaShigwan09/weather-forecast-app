@@ -39,7 +39,8 @@ st.markdown("""
     
     .stApp [data-testid="stSidebar"] {
         background-color: white;
-        border-right: 1px solid #e2e8f0;
+        border-right: 1px solid red;
+        color :red;
     }
     
     .stApp [data-testid="stHeader"] {
