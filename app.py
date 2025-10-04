@@ -49,7 +49,7 @@ st.markdown("""
     
     /* Reset all default colors */
     .stMarkdown, .stText, p, span, div {
-        color: #1e293b !important;
+        color: red !important;
     }
     
     /* Sidebar styling */
@@ -79,7 +79,7 @@ st.markdown("""
         background-color: #ffffff !important;
         border: 2px solid #e2e8f0 !important;
         border-radius: 8px !important;
-        color: #1e293b !important;
+        color: red !important;
     } 
     
     .stSelectbox label {
