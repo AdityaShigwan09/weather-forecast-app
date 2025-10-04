@@ -83,7 +83,7 @@ st.markdown("""
     } 
     
     .stSelectbox label {
-        color: red !important;
+        color: black !important;
         font-weight: 500 !important;
     }
     
