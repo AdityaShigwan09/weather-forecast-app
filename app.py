@@ -32,16 +32,16 @@ st.markdown("""
     
     /* Remove Streamlit default styling */
     .stApp {
-        background-color: #f8fafc !important;
+        background-color: white !important;
     }
     
-    /* Override Streamlit theme colors */
+    /* Override Streamlit theme colors 
     .stApp [data-testid="stAppViewContainer"] {
-        background-color: #f8fafc;
-    }
+        background-color: white;
+    }*/
     
     .stApp [data-testid="stSidebar"] {
-        background-color: #ffffff;
+        background-color: white;
         border-right: 1px solid #e2e8f0;
     }
     
