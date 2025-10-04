@@ -26,36 +26,71 @@ hide_streamlit_style = """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 # Enhanced Custom CSS with Modern Design and Theme Override
+import streamlit as st
+
+st.set_page_config(page_title="Location Selector", layout="wide")
+
+# Custom CSS styling
 st.markdown("""
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-    
-    /* Remove Streamlit default styling */
-    .stApp {
-        background-color: white !important;
-        color:black;
-    }
-    
-    
-    .stApp [data-testid="stSidebar"] {
-        background-color: white;
-        border-right: 1px solid red;
-        color :red;
-    }
-    
-    .stApp [data-testid="stHeader"] {
-        background-color: transparent;
-    }
-    
-    /* Reset all default colors */
-    .stMarkdown, .stText, p, span, div {
-        color: black !important;
-    }
-    
-    /* Sidebar styling */
-    .stApp [data-testid="stSidebar"] .stMarkdown {
-        color: #334155 !important;
-    }
+    <style>
+        /* Sidebar background */
+        [data-testid="stSidebar"] {
+            background-color: #111; /* dark sidebar background */
+        }
+
+        /* Dropdown container */
+        div[data-baseweb="select"] > div {
+            background-color: white !important;   /* dropdown box background */
+            color: black !important;              /* text color */
+            border-radius: 8px;
+        }
+
+        /* Text inside dropdown */
+        div[data-baseweb="select"] span {
+            color: black !important; /* text color */
+        }
+
+        /* Options list (when expanded) */
+        ul[role="listbox"] li {
+            background-color: white !important;
+            color: black !important;
+        }
+
+        /* Hover effect for options */
+        ul[role="listbox"] li:hover {
+            background-color: #f0f0f0 !important;
+            color: black !important;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
+# Sidebar layout
+st.sidebar.title("🌍 Location Selector")
+
+# Country selectbox
+country = st.sidebar.selectbox(
+    "Select Country",
+    ["India", "USA", "Germany", "Australia"]
+)
+
+# City options based on country
+if country == "India":
+    cities = ["Mumbai", "Delhi", "Bengaluru", "Pune"]
+elif country == "USA":
+    cities = ["New York", "Los Angeles", "Chicago"]
+elif country == "Germany":
+    cities = ["Berlin", "Munich", "Hamburg"]
+elif country == "Australia":
+    cities = ["Sydney", "Melbourne", "Brisbane"]
+else:
+    cities = []
+
+# City selectbox
+city = st.sidebar.selectbox("Select City", cities)
+
+# Display selection in main area
+st.write(f"### Selected Location: {country}, {city}")
+
     
     /* Button styling override */
     .stButton > button {
