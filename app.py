@@ -76,14 +76,14 @@ st.markdown("""
     
     /* Selectbox styling */
     .stSelectbox > div > div {
-        background-color:red !important;
+        background-color: #ffffff !important;
         border: 2px solid #e2e8f0 !important;
         border-radius: 8px !important;
         color: black !important;
     } 
     
     .stSelectbox label {
-        color: #334155 !important;
+        color: red !important;
         font-weight: 500 !important;
     }
     
