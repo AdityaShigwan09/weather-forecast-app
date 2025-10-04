@@ -92,17 +92,17 @@ city = st.sidebar.selectbox("Select City", cities)
 st.write(f"### Selected Location: {country}, {city}")
 
     
-    /* Button styling override */
-    .stButton > button {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-        color: white !important;
-        border: none !important;
-        border-radius: 8px !important;
-        padding: 0.6rem 1.5rem !important;
-        font-weight: 500 !important;
-        transition: all 0.3s ease !important;
-        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3) !important;
-    }
+/* Button styling override */
+.stButton > button {
+background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+color: white !important;
+border: none !important;
+border-radius: 8px !important;
+padding: 0.6rem 1.5rem !important;
+font-weight: 500 !important;
+transition: all 0.3s ease !important;
+box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3) !important;
+}
     
     .stButton > button:hover {
         transform: translateY(-2px) !important;
