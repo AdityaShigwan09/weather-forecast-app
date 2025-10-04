@@ -26,83 +26,48 @@ hide_streamlit_style = """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 # Enhanced Custom CSS with Modern Design and Theme Override
-import streamlit as st
-
-st.set_page_config(page_title="Location Selector", layout="wide")
-
-# Custom CSS styling
 st.markdown("""
-    <style>
-        /* Sidebar background */
-        [data-testid="stSidebar"] {
-            background-color: #111; /* dark sidebar background */
-        }
-
-        /* Dropdown container */
-        div[data-baseweb="select"] > div {
-            background-color: white !important;   /* dropdown box background */
-            color: black !important;              /* text color */
-            border-radius: 8px;
-        }
-
-        /* Text inside dropdown */
-        div[data-baseweb="select"] span {
-            color: black !important; /* text color */
-        }
-
-        /* Options list (when expanded) */
-        ul[role="listbox"] li {
-            background-color: white !important;
-            color: black !important;
-        }
-
-        /* Hover effect for options */
-        ul[role="listbox"] li:hover {
-            background-color: #f0f0f0 !important;
-            color: black !important;
-        }
-    </style>
-""", unsafe_allow_html=True)
-
-# Sidebar layout
-st.sidebar.title("🌍 Location Selector")
-
-# Country selectbox
-country = st.sidebar.selectbox(
-    "Select Country",
-    ["India", "USA", "Germany", "Australia"]
-)
-
-# City options based on country
-if country == "India":
-    cities = ["Mumbai", "Delhi", "Bengaluru", "Pune"]
-elif country == "USA":
-    cities = ["New York", "Los Angeles", "Chicago"]
-elif country == "Germany":
-    cities = ["Berlin", "Munich", "Hamburg"]
-elif country == "Australia":
-    cities = ["Sydney", "Melbourne", "Brisbane"]
-else:
-    cities = []
-
-# City selectbox
-city = st.sidebar.selectbox("Select City", cities)
-
-# Display selection in main area
-st.write(f"### Selected Location: {country}, {city}")
-
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
     
-/* Button styling override */
-.stButton > button {
-background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-color: white !important;
-border: none !important;
-border-radius: 8px !important;
-padding: 0.6rem 1.5rem !important;
-font-weight: 500 !important;
-transition: all 0.3s ease !important;
-box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3) !important;
-}
+    /* Remove Streamlit default styling */
+    .stApp {
+        background-color: white !important;
+        color:black;
+    }
+    
+    
+    .stApp [data-testid="stSidebar"] {
+        background-color: white;
+        border-right: 1px solid red;
+        color :red;
+    }
+    
+    .stApp [data-testid="stHeader"] {
+        background-color: transparent;
+    }
+    
+    /* Reset all default colors */
+    .stMarkdown, .stText, p, span, div {
+        color: black !important;
+    }
+    
+    /* Sidebar styling */
+    .stApp [data-testid="stSidebar"] .stMarkdown {
+        color: #334155 !important;
+    }
+    
+    /* Button styling override */
+    .stButton > button {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        color: white !important;
+        border: none !important;
+        border-radius: 8px !important;
+        padding: 0.6rem 1.5rem !important;
+        font-weight: 500 !important;
+        transition: all 0.3s ease !important;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3) !important;
+    }
     
     .stButton > button:hover {
         transform: translateY(-2px) !important;
