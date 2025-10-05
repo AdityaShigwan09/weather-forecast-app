@@ -9,7 +9,7 @@ from sklearn.ensemble import RandomForestRegressor
 import os
 
 st.set_page_config(
-    page_title="Whether Air Quality Forecasting",
+    page_title="TEMPO Air Quality Forecasting",
     layout="wide",
     page_icon="🛰️",
     initial_sidebar_state="expanded"
@@ -20,7 +20,7 @@ hide_streamlit_style = """
     <style>
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
-    header {visibility: hidden;}
+    /* keep header visible so the sidebar toggle (hamburger) remains accessible */
     </style>
 """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
@@ -32,16 +32,17 @@ st.markdown("""
     
     /* Remove Streamlit default styling */
     .stApp {
-        background-color: white !important;
-        color: black;
-        
+        background-color: #f8fafc !important;
     }
     
+    /* Override Streamlit theme colors */
+    .stApp [data-testid="stAppViewContainer"] {
+        background-color: #f8fafc;
+    }
     
     .stApp [data-testid="stSidebar"] {
-        background-color: white;
-        border-right: 1px solid red;
-        color :red;
+        background-color: #ffffff;
+        border-right: 1px solid #e2e8f0;
     }
     
     .stApp [data-testid="stHeader"] {
@@ -50,7 +51,7 @@ st.markdown("""
     
     /* Reset all default colors */
     .stMarkdown, .stText, p, span, div {
-        color: black !important;
+        color: #1e293b !important;
     }
     
     /* Sidebar styling */
@@ -75,17 +76,73 @@ st.markdown("""
         box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4) !important;
     }
     
-    /* Selectbox styling */
+    /* Selectbox styling - COMPLETE FIX */
     .stSelectbox > div > div {
         background-color: #ffffff !important;
         border: 2px solid #e2e8f0 !important;
         border-radius: 8px !important;
-        color: black !important;
-    } 
+        color: #1e293b !important;
+    }
+    
+    .stSelectbox div[data-baseweb="select"] > div {
+        background-color: #ffffff !important;
+        color: #1e293b !important;
+    }
+    
+    .stSelectbox input {
+        color: #1e293b !important;
+        background-color: #ffffff !important;
+    }
+    
+    .stSelectbox [data-baseweb="select"] span {
+        color: #1e293b !important;
+    }
     
     .stSelectbox label {
-        color: red !important;
+        color: #334155 !important;
         font-weight: 500 !important;
+    }
+    
+    /* Dropdown menu - CRITICAL FIX FOR BLACK BACKGROUND */
+    [data-baseweb="popover"] {
+        background-color: #ffffff !important;
+    }
+    
+    [data-baseweb="menu"] {
+        background-color: #ffffff !important;
+    }
+    
+    [data-baseweb="menu"] ul {
+        background-color: #ffffff !important;
+    }
+    
+    [data-baseweb="menu"] li {
+        background-color: #ffffff !important;
+        color: #1e293b !important;
+    }
+    
+    [data-baseweb="menu"] li:hover {
+        background-color: #f1f5f9 !important;
+        color: #1e293b !important;
+    }
+    
+    [data-baseweb="menu"] [aria-selected="true"] {
+        background-color: #e0e7ff !important;
+        color: #1e293b !important;
+    }
+    
+    /* Force white on all dropdown elements */
+    ul[role="listbox"] {
+        background-color: #ffffff !important;
+    }
+    
+    li[role="option"] {
+        background-color: #ffffff !important;
+        color: #1e293b !important;
+    }
+    
+    li[role="option"]:hover {
+        background-color: #f1f5f9 !important;
     }
     
     /* Metric cards */
@@ -621,9 +678,9 @@ def get_health_message(aqi, category):
 # ------------------------
 st.markdown("""
 <div class="main-header">
-    <h1>🛰️ Whether Quality Forecasting System</h1>
+    <h1>🛰️ TEMPO Air Quality Forecasting System</h1>
     <p style="font-size: 1.1em; margin-top: 0.5rem;">
-            • Global Coverage • AI-Powered Predictions
+        NASA Space Apps Challenge 2025 • Global Coverage • AI-Powered Predictions
     </p>
 </div>
 """, unsafe_allow_html=True)
@@ -1026,7 +1083,7 @@ fig_heat.add_trace(go.Scattermapbox(
         showscale=True,
         colorbar=dict(
             title="AQI",
-            thickness=15,
+            thickness=15,   
             len=0.7,
             bgcolor='rgba(255,255,255,0.8)',
             tickmode='array',
