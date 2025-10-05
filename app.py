@@ -9,7 +9,7 @@ from sklearn.ensemble import RandomForestRegressor
 import os
 
 st.set_page_config(
-    page_title="Whether Air Quality Forecasting",
+    page_title="Weather Air Quality Forecasting",
     layout="wide",
     page_icon="🛰️",
     initial_sidebar_state="expanded"
@@ -25,40 +25,83 @@ hide_streamlit_style = """
 """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
-# Enhanced Custom CSS with Modern Design and Theme Override
+# COMPLETELY FIXED CSS - All sidebar colors corrected
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
     
-    /* Remove Streamlit default styling */
+    * {
+        font-family: 'Inter', sans-serif;
+    }
+    
+    /* Main app background */
     .stApp {
         background-color: white !important;
         color: black;
-        
     }
     
-    
+    /* SIDEBAR - Fixed background and border */
     .stApp [data-testid="stSidebar"] {
-        background-color: white;
-        border-right: 1px solid red;
-        color :red;
+        background-color: #f8fafc !important;
+        border-right: 1px solid #cbd5e1 !important;
     }
     
-    .stApp [data-testid="stHeader"] {
-        background-color: transparent;
+    /* ALL sidebar text - BLACK */
+    [data-testid="stSidebar"] .stMarkdown,
+    [data-testid="stSidebar"] .stMarkdown p,
+    [data-testid="stSidebar"] .stMarkdown li,
+    [data-testid="stSidebar"] .stMarkdown span,
+    [data-testid="stSidebar"] .stMarkdown strong {
+        color: #1e293b !important;
     }
     
-    /* Reset all default colors */
-    .stMarkdown, .stText, p, span, div {
-        color: black !important;
+    /* Sidebar headers - BLACK */
+    [data-testid="stSidebar"] h1,
+    [data-testid="stSidebar"] h2,
+    [data-testid="stSidebar"] h3,
+    [data-testid="stSidebar"] h4 {
+        color: #0f172a !important;
+        font-weight: 600 !important;
     }
     
-    /* Sidebar styling */
-    .stApp [data-testid="stSidebar"] .stMarkdown {
-        color: #334155 !important;
+    /* SELECTBOX - White box with BLACK text */
+    [data-testid="stSidebar"] .stSelectbox label {
+        color: #0f172a !important;
+        font-weight: 600 !important;
+        font-size: 1rem !important;
     }
     
-    /* Button styling override */
+    .stSelectbox > div > div {
+        background-color: #ffffff !important;
+        border: 2px solid #cbd5e1 !important;
+        border-radius: 8px !important;
+        color: #0f172a !important;
+    }
+    
+    [data-testid="stSidebar"] .stSelectbox [data-baseweb="select"] > div {
+        background-color: white !important;
+        color: #0f172a !important;
+    }
+    
+    /* Selectbox dropdown */
+    [role="listbox"] {
+        background-color: white !important;
+    }
+    
+    [role="listbox"] li {
+        color: #0f172a !important;
+    }
+    
+    [role="listbox"] li:hover {
+        background-color: #f1f5f9 !important;
+    }
+    
+    /* Sidebar captions */
+    [data-testid="stSidebar"] .stCaption {
+        color: #64748b !important;
+    }
+    
+    /* Button styling */
     .stButton > button {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
         color: white !important;
@@ -73,19 +116,6 @@ st.markdown("""
     .stButton > button:hover {
         transform: translateY(-2px) !important;
         box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4) !important;
-    }
-    
-    /* Selectbox styling */
-    .stSelectbox > div > div {
-        background-color: #ffffff !important;
-        border: 2px solid #e2e8f0 !important;
-        border-radius: 8px !important;
-        color: black !important;
-    } 
-    
-    .stSelectbox label {
-        color: red !important;
-        font-weight: 500 !important;
     }
     
     /* Metric cards */
@@ -106,10 +136,6 @@ st.markdown("""
         border-radius: 12px !important;
         box-shadow: 0 2px 8px rgba(0,0,0,0.08) !important;
         border: 1px solid #f1f5f9 !important;
-    }
-    
-    * {
-        font-family: 'Inter', sans-serif;
     }
     
     .main-header {
@@ -181,10 +207,6 @@ st.markdown("""
         margin: 0.5rem 0;
     }
     
-    .alert_class {
-        color: #1f2937 !important;
-    }
-    
     .alert-critical h3, .alert-warning h3, .alert-good h3 {
         margin-top: 0;
         font-weight: 600;
@@ -230,22 +252,9 @@ st.markdown("""
         border-top-color: #667eea !important;
     }
     
-    /* Remove default Streamlit colors from text */
+    /* Main content text */
     .stMarkdown p, .stMarkdown li, .stMarkdown span {
         color: #334155 !important;
-    }
-    
-    /* Sidebar specific text */
-    [data-testid="stSidebar"] .stMarkdown p,
-    [data-testid="stSidebar"] .stMarkdown li,
-    [data-testid="stSidebar"] .stMarkdown span {
-        color: #475569 !important;
-    }
-    
-    [data-testid="stSidebar"] h1,
-    [data-testid="stSidebar"] h2,
-    [data-testid="stSidebar"] h3 {
-        color: #1e293b !important;
     }
     
     /* Caption styling */
@@ -256,7 +265,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ------------------------
-# Comprehensive Location Database (Alphabetically Sorted)
+# Comprehensive Location Database
 # ------------------------
 LOCATIONS = {
     # United States
@@ -382,11 +391,11 @@ def fetch_nasa_tempo_data(lat, lon):
         
         if ed_user and ed_pass:
             auth = Auth().login(username=ed_user, password=ed_pass)
-            st.sidebar.success("✅ NASA EARTHDATA: Connected")
+            st.sidebar.success("NASA EARTHDATA: Connected")
         else:
             try:
                 auth = Auth().login(strategy="netrc")
-                st.sidebar.success("✅ NASA EARTHDATA: Connected (.netrc)")
+                st.sidebar.success("NASA EARTHDATA: Connected (.netrc)")
             except Exception:
                 return None
         
@@ -398,16 +407,16 @@ def fetch_nasa_tempo_data(lat, lon):
         ).get(5)
         
         if results:
-            st.sidebar.info(f"📡 Found {len(results)} TEMPO granules")
+            st.sidebar.info(f"Found {len(results)} TEMPO granules")
             return None
         
         return None
         
     except ImportError:
-        st.sidebar.warning("⚠️ earthaccess not installed. Using simulated data.")
+        st.sidebar.warning("earthaccess not installed. Using simulated data.")
         return None
     except Exception as e:
-        st.sidebar.warning(f"⚠️ NASA EARTHDATA: {str(e)[:50]}")
+        st.sidebar.warning(f"NASA EARTHDATA: {str(e)[:50]}")
         return None
 
 # ------------------------
@@ -621,27 +630,31 @@ def get_health_message(aqi, category):
 # ------------------------
 st.markdown("""
 <div class="main-header">
-    <h1>🛰️ Whether Quality Forecasting System</h1>
+    <h1>🛰️ Weather Air Quality Forecasting System</h1>
     <p style="font-size: 1.1em; margin-top: 0.5rem;">
-            • Global Coverage • AI-Powered Predictions
+        NASA TEMPO Satellite Data • Global Coverage • AI-Powered Predictions
     </p>
 </div>
 """, unsafe_allow_html=True)
 
-# Sidebar with Enhanced Search
+# SIDEBAR - Fixed with proper filtering
 st.sidebar.title("🌍 Location Settings")
 st.sidebar.markdown("### Search Location")
 
-# Country grouping for better UX
+# Country grouping
 sorted_locations = sorted(LOCATIONS.keys())
 countries = sorted(set([loc.split(" - ")[0] for loc in sorted_locations]))
 
 selected_country = st.sidebar.selectbox("🌐 Select Country", ["All Countries"] + countries)
 
+# Fixed filtering logic
 if selected_country == "All Countries":
     filtered_locations = sorted_locations
 else:
     filtered_locations = [loc for loc in sorted_locations if loc.startswith(selected_country)]
+    if not filtered_locations:
+        st.sidebar.warning(f"No cities found for {selected_country}")
+        filtered_locations = sorted_locations
 
 selected_location = st.sidebar.selectbox("📍 Select City", filtered_locations)
 location_data = LOCATIONS[selected_location]
@@ -756,7 +769,7 @@ if weather_forecast and not tempo_data.empty:
     forecast_df['aqi'] = forecast_df['no2_forecast'].apply(lambda x: calculate_aqi(x)[0])
     forecast_df['category'] = forecast_df['no2_forecast'].apply(lambda x: calculate_aqi(x)[1])
     
-    # Enhanced Chart with better styling
+    # Enhanced Chart
     fig = go.Figure()
     fig.add_trace(go.Scatter(
         x=tempo_data['datetime'], y=tempo_data['no2_satellite'],
@@ -800,7 +813,7 @@ if weather_forecast and not tempo_data.empty:
     fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(128,128,128,0.2)')
     st.plotly_chart(fig, use_container_width=True)
     
-    # Detailed Forecast Table with Enhanced Styling
+    # Detailed Forecast Table
     st.subheader("📅 Detailed Forecast")
     display = forecast_df.copy()
     display['Time'] = display['datetime'].dt.strftime('%m/%d %H:%M')
@@ -808,7 +821,6 @@ if weather_forecast and not tempo_data.empty:
     display['AQI'] = display['aqi']
     display['Category'] = display['category']
     
-    # Color code the dataframe
     def highlight_aqi(row):
         aqi = row['AQI']
         if aqi <= 50:
@@ -831,7 +843,7 @@ if weather_forecast and not tempo_data.empty:
     if display.loc[max_idx, 'AQI'] > 100:
         st.warning(f"⚠️ **Peak Pollution Alert**: AQI {display.loc[max_idx, 'AQI']} ({display.loc[max_idx, 'Category']}) expected at {display.loc[max_idx, 'Time']}")
 
-# Comparison Section with Enhanced Design
+# Comparison Section
 st.header("📊 TEMPO Satellite vs Ground Sensors Comparison")
 col1, col2 = st.columns(2)
 
@@ -924,7 +936,7 @@ with col3:
         </div>
         """, unsafe_allow_html=True)
 
-# Export Section with Enhanced Design
+# Export Section
 st.header("📥 Export & Download Data")
 st.markdown("Download comprehensive datasets for further analysis")
 
@@ -960,39 +972,18 @@ with col3:
             use_container_width=True
         )
 
-# Air Quality Heat Map Section
+# Heat Map Section
 st.markdown("---")
 st.header("🗺️ Air Quality Heat Map")
 
-# Create heat map data with AQI values
 if not openaq_data.empty and 'lat' in openaq_data.columns and 'lon' in openaq_data.columns and 'value' in openaq_data.columns:
-    # Get unique stations with their latest readings
     heat_map_data = openaq_data.groupby(['lat', 'lon', 'location']).agg({
         'value': 'mean'
     }).reset_index()
     
-    # Convert NO2 to AQI for color coding
-    heat_map_data['aqi'] = heat_map_data['value'].apply(lambda x: calculate_aqi(x * 0.53)[0])  # Convert µg/m³ to ppb approx
+    heat_map_data['aqi'] = heat_map_data['value'].apply(lambda x: calculate_aqi(x * 0.53)[0])
     heat_map_data['aqi_category'] = heat_map_data['value'].apply(lambda x: calculate_aqi(x * 0.53)[1])
-    
-    # Create color scale based on AQI
-    def get_aqi_color(aqi):
-        if aqi <= 50:
-            return '#00e400'
-        elif aqi <= 100:
-            return '#ffff00'
-        elif aqi <= 150:
-            return '#ff7e00'
-        elif aqi <= 200:
-            return '#ff0000'
-        elif aqi <= 300:
-            return '#8f3f97'
-        else:
-            return '#7e0023'
-    
-    heat_map_data['color'] = heat_map_data['aqi'].apply(get_aqi_color)
 else:
-    # Create synthetic data for demonstration
     heat_map_data = pd.DataFrame({
         'lat': [location_data['lat'] + np.random.uniform(-0.1, 0.1) for _ in range(8)],
         'lon': [location_data['lon'] + np.random.uniform(-0.1, 0.1) for _ in range(8)],
@@ -1001,13 +992,9 @@ else:
     })
     heat_map_data['aqi'] = heat_map_data['value'].apply(lambda x: calculate_aqi(x)[0])
     heat_map_data['aqi_category'] = heat_map_data['value'].apply(lambda x: calculate_aqi(x)[1])
-    heat_map_data['color'] = heat_map_data['aqi'].apply(lambda aqi: 
-        '#00e400' if aqi <= 50 else '#ffff00' if aqi <= 100 else '#ff7e00' if aqi <= 150 else '#ff0000')
 
-# Create the scatter mapbox
 fig_heat = go.Figure()
 
-# Add monitoring stations with color-coded AQI
 fig_heat.add_trace(go.Scattermapbox(
     lat=heat_map_data['lat'],
     lon=heat_map_data['lon'],
@@ -1016,12 +1003,12 @@ fig_heat.add_trace(go.Scattermapbox(
         size=25,
         color=heat_map_data['aqi'],
         colorscale=[
-            [0, '#00e400'],      # Good
-            [0.2, '#ffff00'],    # Moderate
-            [0.4, '#ff7e00'],    # Unhealthy for Sensitive
-            [0.6, '#ff0000'],    # Unhealthy
-            [0.8, '#8f3f97'],    # Very Unhealthy
-            [1, '#7e0023']       # Hazardous
+            [0, '#00e400'],
+            [0.2, '#ffff00'],
+            [0.4, '#ff7e00'],
+            [0.6, '#ff0000'],
+            [0.8, '#8f3f97'],
+            [1, '#7e0023']
         ],
         showscale=True,
         colorbar=dict(
@@ -1038,39 +1025,22 @@ fig_heat.add_trace(go.Scattermapbox(
     ),
     text=heat_map_data['location'],
     customdata=heat_map_data[['aqi', 'aqi_category', 'value']],
-    hovertemplate='<b>%{text}</b><br>' +
-                  'AQI: %{customdata[0]}<br>' +
-                  'Category: %{customdata[1]}<br>' +
-                  'NO₂: %{customdata[2]:.1f} µg/m³<br>' +
-                  '<extra></extra>'
+    hovertemplate='<b>%{text}</b><br>AQI: %{customdata[0]}<br>Category: %{customdata[1]}<br>NO₂: %{customdata[2]:.1f} µg/m³<br><extra></extra>'
 ))
 
-# Add main location marker
 fig_heat.add_trace(go.Scattermapbox(
     lat=[location_data['lat']],
     lon=[location_data['lon']],
     mode='markers',
-    marker=dict(
-        size=20,
-        color='#667eea',
-        symbol='star'
-    ),
+    marker=dict(size=20, color='#667eea', symbol='star'),
     text=[selected_location.split(' - ')[-1]],
     hovertemplate='<b>Main Location</b><br>%{text}<extra></extra>',
     name='Main Location'
 ))
 
-# Update map layout
 fig_heat.update_layout(
-    title={
-        'text': f'Real-Time Air Quality Distribution: {selected_location}',
-        'font': {'size': 18, 'family': 'Inter', 'color': '#1e293b'}
-    },
-    mapbox=dict(
-        style='open-street-map',
-        center=dict(lat=location_data['lat'], lon=location_data['lon']),
-        zoom=10
-    ),
+    title={'text': f'Real-Time Air Quality Distribution: {selected_location}', 'font': {'size': 18, 'family': 'Inter', 'color': '#1e293b'}},
+    mapbox=dict(style='open-street-map', center=dict(lat=location_data['lat'], lon=location_data['lon']), zoom=10),
     height=550,
     showlegend=False,
     font=dict(family='Inter'),
@@ -1079,41 +1049,17 @@ fig_heat.update_layout(
 
 st.plotly_chart(fig_heat, use_container_width=True)
 
-# AQI Legend and Statistics
+# AQI Legend
 col1, col2, col3, col4 = st.columns(4)
 with col1:
-    st.markdown("""
-    <div style="background: linear-gradient(135deg, #dcfce7 0%, #a7f3d0 100%); padding: 1rem; border-radius: 8px; text-align: center;">
-        <h4 style="margin: 0; color: #166534;">🟢 Good</h4>
-        <p style="margin: 0.5rem 0 0 0; color: #15803d;">0-50 AQI</p>
-    </div>
-    """, unsafe_allow_html=True)
-
+    st.markdown('<div style="background: linear-gradient(135deg, #dcfce7 0%, #a7f3d0 100%); padding: 1rem; border-radius: 8px; text-align: center;"><h4 style="margin: 0; color: #166534;">🟢 Good</h4><p style="margin: 0.5rem 0 0 0; color: #15803d;">0-50 AQI</p></div>', unsafe_allow_html=True)
 with col2:
-    st.markdown("""
-    <div style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); padding: 1rem; border-radius: 8px; text-align: center;">
-        <h4 style="margin: 0; color: #92400e;">🟡 Moderate</h4>
-        <p style="margin: 0.5rem 0 0 0; color: #b45309;">51-100 AQI</p>
-    </div>
-    """, unsafe_allow_html=True)
-
+    st.markdown('<div style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); padding: 1rem; border-radius: 8px; text-align: center;"><h4 style="margin: 0; color: #92400e;">🟡 Moderate</h4><p style="margin: 0.5rem 0 0 0; color: #b45309;">51-100 AQI</p></div>', unsafe_allow_html=True)
 with col3:
-    st.markdown("""
-    <div style="background: linear-gradient(135deg, #fed7aa 0%, #fdba74 100%); padding: 1rem; border-radius: 8px; text-align: center;">
-        <h4 style="margin: 0; color: #9a3412;">🟠 Sensitive</h4>
-        <p style="margin: 0.5rem 0 0 0; color: #c2410c;">101-150 AQI</p>
-    </div>
-    """, unsafe_allow_html=True)
-
+    st.markdown('<div style="background: linear-gradient(135deg, #fed7aa 0%, #fdba74 100%); padding: 1rem; border-radius: 8px; text-align: center;"><h4 style="margin: 0; color: #9a3412;">🟠 Sensitive</h4><p style="margin: 0.5rem 0 0 0; color: #c2410c;">101-150 AQI</p></div>', unsafe_allow_html=True)
 with col4:
-    st.markdown("""
-    <div style="background: linear-gradient(135deg, #fecaca 0%, #fca5a5 100%); padding: 1rem; border-radius: 8px; text-align: center;">
-        <h4 style="margin: 0; color: #991b1b;">🔴 Unhealthy</h4>
-        <p style="margin: 0.5rem 0 0 0; color: #b91c1c;">151+ AQI</p>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown('<div style="background: linear-gradient(135deg, #fecaca 0%, #fca5a5 100%); padding: 1rem; border-radius: 8px; text-align: center;"><h4 style="margin: 0; color: #991b1b;">🔴 Unhealthy</h4><p style="margin: 0.5rem 0 0 0; color: #b91c1c;">151+ AQI</p></div>', unsafe_allow_html=True)
 
-# Map statistics
 st.markdown("<br>", unsafe_allow_html=True)
 col1, col2, col3, col4 = st.columns(4)
 with col1:
@@ -1121,12 +1067,11 @@ with col1:
 with col2:
     st.metric("📍 Longitude", f"{location_data['lon']:.4f}°")
 with col3:
-    avg_aqi = int(heat_map_data['aqi'].mean())
-    st.metric("📊 Average AQI", avg_aqi)
+    st.metric("📊 Average AQI", int(heat_map_data['aqi'].mean()))
 with col4:
     st.metric("🗺️ Monitoring Points", len(heat_map_data))
 
-# Additional Information Section
+# About Section
 st.markdown("---")
 st.header("ℹ️ About This System")
 
@@ -1166,7 +1111,7 @@ with col2:
     - Feature engineering: 10 key environmental factors
     """)
 
-# Footer with improved styling
+# Footer
 st.markdown("---")
 st.markdown("""
 <div style="text-align: center; padding: 2rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 10px; color: white;">
