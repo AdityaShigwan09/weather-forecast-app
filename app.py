@@ -328,6 +328,30 @@ st.markdown("""
     .stDataFrame td, .stDataFrame th, .stDataFrame div {
         color: #000000 !important;
     }
+
+    /* ✅ Fix for unwanted black table border in Streamlit Cloud */
+[data-testid="stDataFrame"] table {
+    border-collapse: collapse !important;
+    border: 1px solid #e2e8f0 !important;
+    background-color: #ffffff !important;
+}
+
+[data-testid="stDataFrame"] th {
+    background-color: #f8fafc !important;
+    color: #1e293b !important;
+    border: 1px solid #e2e8f0 !important;
+}
+
+[data-testid="stDataFrame"] td {
+    border: 1px solid #e2e8f0 !important;
+    color: #1e293b !important;
+}
+
+[data-testid="stDataFrame"] thead {
+    background-color: #f8fafc !important;
+    border-bottom: 2px solid #e2e8f0 !important;
+}
+
 </style>
 """, unsafe_allow_html=True)
 
