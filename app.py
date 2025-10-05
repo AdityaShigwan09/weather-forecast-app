@@ -27,9 +27,6 @@ st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 # Enhanced Custom CSS with Modern Design and Theme Override
 st.markdown("""
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
     
@@ -311,6 +308,10 @@ st.markdown("""
     /* Caption styling */
     .stCaption {
         color: #64748b !important;
+    }
+    /* Ensure DataFrame text is visible (black) for Detailed Forecast and other tables */
+    .stDataFrame td, .stDataFrame th, .stDataFrame div {
+        color: #000000 !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -861,7 +862,7 @@ if weather_forecast and not tempo_data.empty:
     st.plotly_chart(fig, use_container_width=True)
     
     # Detailed Forecast Table with Enhanced Styling
-    st.subheader("📅 Detailed Forecast")
+    st.markdown('<h3 style="color:#000000;">📅 Detailed Forecast</h3>', unsafe_allow_html=True)
     display = forecast_df.copy()
     display['Time'] = display['datetime'].dt.strftime('%m/%d %H:%M')
     display['NO₂ (ppb)'] = display['no2_forecast'].round(1)
@@ -884,8 +885,17 @@ if weather_forecast and not tempo_data.empty:
         else:
             return ['background-color: #fecdd3'] * len(row)
     
+    # Build a Styler and force readable colors: black text in cells and headers, light header background
     styled_df = display[['Time', 'NO₂ (ppb)', 'AQI', 'Category']].style.apply(highlight_aqi, axis=1)
-    st.dataframe(styled_df, use_container_width=True, height=350)
+    # ensure cell text is black
+    styled_df = styled_df.set_properties(**{'color': '#000000'})
+    # force header styling (black text, white background)
+    styled_df = styled_df.set_table_styles([
+        {'selector': 'th', 'props': [('color', '#000000'), ('background-color', '#ffffff'), ('font-weight', '600')]},
+        {'selector': 'thead th', 'props': [('color', '#000000'), ('background-color', '#ffffff')]} 
+    ])
+    # Use Streamlit's newer width parameter
+    st.dataframe(styled_df, width='stretch', height=350)
     
     max_idx = display['AQI'].idxmax()
     if display.loc[max_idx, 'AQI'] > 100:
