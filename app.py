@@ -32,7 +32,7 @@ st.markdown("""
     
     /* Remove Streamlit default styling */
     .stApp {
-        background-color: white !important;
+        background-color: Black !important;
         color:black;
     }
     
