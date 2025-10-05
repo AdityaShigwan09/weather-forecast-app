@@ -273,7 +273,7 @@ st.markdown("""
     .stDataFrame div.row_heading,
     .stDataFrame .row_heading,
     .stDataFrame .index_name {
-        background-color: #ffffff !important;
+        # background-color:  !important;
         color: #000000 !important;
     }
     
