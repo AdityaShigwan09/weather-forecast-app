@@ -29,9 +29,6 @@ st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     /* Remove Streamlit default styling */
     .stApp {
@@ -261,58 +258,24 @@ st.markdown("""
         font-weight: 600;
     }
     
-    /* ✅ FIX FOR BLACK BORDER ON STREAMLIT CLOUD DATAFRAME */
-
-/* Ensure no default shadows or borders */
-[data-testid="stDataFrame"] {
-    border: none !important;
-    box-shadow: none !important;
-    background-color: #ffffff !important;
-}
-
-/* Force consistent white background */
-[data-testid="stDataFrame"] div[role="table"],
-[data-testid="stDataFrame"] table {
-    background-color: #ffffff !important;
-    border: 1px solid #e2e8f0 !important;
-    border-radius: 8px !important;
-    overflow: hidden !important;
-}
-
-/* Fix header color */
-[data-testid="stDataFrame"] thead th {
-    background-color: #f8fafc !important;
-    color: #1e293b !important;
-    border-bottom: 1px solid #e2e8f0 !important;
-}
-
-/* Fix cell borders */
-[data-testid="stDataFrame"] td {
-    border: 1px solid #e2e8f0 !important;
-    color: #1e293b !important;
-}
-
-/* Fix row index background (was black on some deployments) */
-[data-testid="stDataFrame"] .row_heading,
-[data-testid="stDataFrame"] [data-testid="stIndexColumn"],
-[data-testid="stDataFrame"] thead th:first-child {
-    background-color: #f8fafc !important;
-    color: #1e293b !important;
-    border-right: 1px solid #e2e8f0 !important;
-}
-
-/* Hover effect for better clarity */
-[data-testid="stDataFrame"] tbody tr:hover {
-    background-color: #f1f5f9 !important;
-    transition: background-color 0.2s ease;
-}
-
-/* Remove double borders if any nested container exists */
-[data-testid="stDataFrame"] > div {
-    border: none !important;
-    box-shadow: none !important;
-}
-
+    /* Dataframe styling */
+    .stDataFrame {
+        border: 1px solid #e2e8f0 !important;
+        border-radius: 8px !important;
+        overflow: hidden !important;
+    }
+    /* Make index (row header) background match table and remove black column */
+    .stDataFrame thead th:first-child,
+    .stDataFrame tbody th,
+    .stDataFrame th.row_heading,
+    .stDataFrame th.row_heading.level0,
+    .stDataFrame th.row_heading.level1,
+    .stDataFrame div.row_heading,
+    .stDataFrame .row_heading,
+    .stDataFrame .index_name {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+    }
     
     /* Download button specific */
     .stDownloadButton > button {
@@ -362,30 +325,6 @@ st.markdown("""
     .stDataFrame td, .stDataFrame th, .stDataFrame div {
         color: #000000 !important;
     }
-
-    /* ✅ Fix for unwanted black table border in Streamlit Cloud */
-[data-testid="stDataFrame"] table {
-    border-collapse: collapse !important;
-    border: 1px solid #e2e8f0 !important;
-    background-color: #ffffff !important;
-}
-
-[data-testid="stDataFrame"] th {
-    background-color: #f8fafc !important;
-    color: #1e293b !important;
-    border: 1px solid #e2e8f0 !important;
-}
-
-[data-testid="stDataFrame"] td {
-    border: 1px solid #e2e8f0 !important;
-    color: #1e293b !important;
-}
-
-[data-testid="stDataFrame"] thead {
-    background-color: #f8fafc !important;
-    border-bottom: 2px solid #e2e8f0 !important;
-}
-
 </style>
 """, unsafe_allow_html=True)
 
