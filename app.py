@@ -264,6 +264,18 @@ st.markdown("""
         border-radius: 8px !important;
         overflow: hidden !important;
     }
+    /* Make index (row header) background match table and remove black column */
+    .stDataFrame thead th:first-child,
+    .stDataFrame tbody th,
+    .stDataFrame th.row_heading,
+    .stDataFrame th.row_heading.level0,
+    .stDataFrame th.row_heading.level1,
+    .stDataFrame div.row_heading,
+    .stDataFrame .row_heading,
+    .stDataFrame .index_name {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+    }
     
     /* Download button specific */
     .stDownloadButton > button {
