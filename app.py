@@ -9,7 +9,7 @@ from sklearn.ensemble import RandomForestRegressor
 import os
 
 st.set_page_config(
-    page_title="TEMPO Air Quality Forecasting",
+    page_title="Whether Quality Forecasting",
     layout="wide",
     page_icon="🛰️",
     initial_sidebar_state="expanded"
@@ -678,9 +678,9 @@ def get_health_message(aqi, category):
 # ------------------------
 st.markdown("""
 <div class="main-header">
-    <h1>🛰️ TEMPO Air Quality Forecasting System</h1>
+    <h1>🛰️ Whether Quality Forecasting System</h1>
     <p style="font-size: 1.1em; margin-top: 0.5rem;">
-        NASA Space Apps Challenge 2025 • Global Coverage • AI-Powered Predictions
+        • Global Coverage • AI-Powered Predictions
     </p>
 </div>
 """, unsafe_allow_html=True)
