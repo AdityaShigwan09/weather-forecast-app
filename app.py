@@ -83,13 +83,6 @@ st.markdown("""
         color: #0f172a !important;
     }
 
-    /*side-bar toogle button*/
-    st.set_page_config(
-    page_title="Weather Air Quality Forecasting",
-    layout="wide",
-    page_icon="🛰️",
-    initial_sidebar_state="expanded"  # ← This controls the sidebar toggle
-)
 
     /* Selectbox dropdown */
     [role="listbox"] {
@@ -108,6 +101,34 @@ st.markdown("""
     [data-testid="stSidebar"] .stCaption {
         color: #64748b !important;
     }
+
+
+    /* Sidebar captions */
+    [data-testid="stSidebar"] .stCaption {
+        color: #64748b !important;
+    }
+    
+
+    /* Hide or style the sidebar toggle button */
+    [data-testid="collapsedControl"] {
+        display: none !important;  /* Hides it completely */
+    }
+    
+    /* OR if you want to style it instead of hiding: */
+    /*
+    [data-testid="collapsedControl"] {
+        color: #667eea !important;
+        background-color: #f8fafc !important;
+    }
+    
+    [data-testid="collapsedControl"]:hover {
+        color: #764ba2 !important;
+    }
+    */
+    
+    /* Button styling */
+    .stButton > button {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
     
     /* Button styling */
     .stButton > button {
