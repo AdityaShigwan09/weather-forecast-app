@@ -82,7 +82,15 @@ st.markdown("""
         background-color: white !important;
         color: #0f172a !important;
     }
-    
+
+    /*side-bar toogle button*/
+    st.set_page_config(
+    page_title="Weather Air Quality Forecasting",
+    layout="wide",
+    page_icon="🛰️",
+    initial_sidebar_state="expanded"  # ← This controls the sidebar toggle
+)
+
     /* Selectbox dropdown */
     [role="listbox"] {
         background-color: white !important;
