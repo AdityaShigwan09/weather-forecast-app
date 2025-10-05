@@ -76,75 +76,28 @@ st.markdown("""
         box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4) !important;
     }
     
-    /* Selectbox styling - COMPLETE FIX */
-    .stSelectbox > div > div {
-        background-color: #ffffff !important;
-        border: 2px solid #e2e8f0 !important;
-        border-radius: 8px !important;
-        color: #1e293b !important;
-    }
-    
-    .stSelectbox div[data-baseweb="select"] > div {
-        background-color: #ffffff !important;
-        color: #1e293b !important;
-    }
-    
-    .stSelectbox input {
-        color: #1e293b !important;
-        background-color: #ffffff !important;
-    }
-    
+    /* Selectbox styling */
+    .stSelectbox > div > div,
+    .stSelectbox div[data-baseweb="select"] > div,
+    .stSelectbox input,
     .stSelectbox [data-baseweb="select"] span {
+        background-color: #ffffff !important;
         color: #1e293b !important;
+        border-color: #e2e8f0 !important;
     }
     
-    .stSelectbox label {
-        color: #334155 !important;
-        font-weight: 500 !important;
-    }
-    
-    /* Dropdown menu - CRITICAL FIX FOR BLACK BACKGROUND */
-    [data-baseweb="popover"] {
-        background-color: #ffffff !important;
-    }
-    
-    [data-baseweb="menu"] {
-        background-color: #ffffff !important;
-    }
-    
-    [data-baseweb="menu"] ul {
-        background-color: #ffffff !important;
-    }
-    
-    [data-baseweb="menu"] li {
+    /* Dropdown fix */
+    [data-baseweb="popover"], [data-baseweb="menu"],
+    [data-baseweb="menu"] ul, [data-baseweb="menu"] li {
         background-color: #ffffff !important;
         color: #1e293b !important;
     }
-    
-    [data-baseweb="menu"] li:hover {
-        background-color: #f1f5f9 !important;
-        color: #1e293b !important;
-    }
-    
-    [data-baseweb="menu"] [aria-selected="true"] {
-        background-color: #e0e7ff !important;
-        color: #1e293b !important;
-    }
-    
-    /* Force white on all dropdown elements */
-    ul[role="listbox"] {
-        background-color: #ffffff !important;
-    }
-    
-    li[role="option"] {
-        background-color: #ffffff !important;
-        color: #1e293b !important;
-    }
-    
+
+    [data-baseweb="menu"] li:hover,
     li[role="option"]:hover {
         background-color: #f1f5f9 !important;
     }
-    
+
     /* Metric cards */
     [data-testid="stMetricValue"] {
         color: #667eea !important;
@@ -168,7 +121,7 @@ st.markdown("""
     * {
         font-family: 'Inter', sans-serif;
     }
-    
+
     .main-header {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         padding: 2.5rem;
@@ -190,7 +143,8 @@ st.markdown("""
         opacity: 0.95;
         color: white !important;
     }
-    
+
+    /* Alert styles */
     .alert-critical {
         background: linear-gradient(135deg, #fee 0%, #fdd 100%);
         border-left: 5px solid #dc2626;
@@ -199,7 +153,6 @@ st.markdown("""
         margin: 1rem 0;
         box-shadow: 0 4px 15px rgba(220, 38, 38, 0.2);
     }
-    
     .alert-warning {
         background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
         border-left: 5px solid #f59e0b;
@@ -208,7 +161,6 @@ st.markdown("""
         margin: 1rem 0;
         box-shadow: 0 4px 15px rgba(245, 158, 11, 0.2);
     }
-    
     .alert-good {
         background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
         border-left: 5px solid #10b981;
@@ -217,67 +169,47 @@ st.markdown("""
         margin: 1rem 0;
         box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2);
     }
-    
-    .info-box {
-        background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
-        border-left: 5px solid #3b82f6;
-        padding: 1.5rem;
-        border-radius: 10px;
-        margin: 1rem 0;
-        box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
-    }
-    
-    .info-box h4 {
-        color: #1e293b !important;
-        margin-top: 0;
-        font-weight: 600;
-    }
-    
-    .info-box p {
-        color: #475569 !important;
-        margin: 0.5rem 0;
-    }
-    
-    .alert_class {
-        color: #1f2937 !important;
-    }
-    
-    .alert-critical h3, .alert-warning h3, .alert-good h3 {
-        margin-top: 0;
-        font-weight: 600;
-        color: #1e293b !important;
-    }
-    
-    .alert-critical p, .alert-warning p, .alert-good p {
-        color: #334155 !important;
-    }
-    
-    /* Headers */
-    h1, h2, h3, h4 {
-        color: #1e293b !important;
-        font-weight: 600;
-    }
-    
-    /* Dataframe styling */
-    .stDataFrame {
-        border: 1px solid #e2e8f0 !important;
+
+    /* ✅ FIXED DATAFRAME STYLING */
+    [data-testid="stDataFrame"] {
+        border: none !important;
+        box-shadow: none !important;
+        background-color: #ffffff !important;
         border-radius: 8px !important;
         overflow: hidden !important;
     }
-    /* Make index (row header) background match table and remove black column */
-    .stDataFrame thead th:first-child,
-    .stDataFrame tbody th,
-    .stDataFrame th.row_heading,
-    .stDataFrame th.row_heading.level0,
-    .stDataFrame th.row_heading.level1,
-    .stDataFrame div.row_heading,
-    .stDataFrame .row_heading,
-    .stDataFrame .index_name {
+
+    [data-testid="stDataFrame"] table {
         background-color: #ffffff !important;
-        color: #000000 !important;
+        border: 1px solid #e2e8f0 !important;
+        border-radius: 8px !important;
     }
-    
-    /* Download button specific */
+
+    [data-testid="stDataFrame"] thead th {
+        background-color: #f8fafc !important;
+        color: #1e293b !important;
+        border-bottom: 1px solid #e2e8f0 !important;
+    }
+
+    [data-testid="stDataFrame"] td {
+        color: #1e293b !important;
+        border: 1px solid #e2e8f0 !important;
+    }
+
+    [data-testid="stDataFrame"] .row_heading,
+    [data-testid="stDataFrame"] [data-testid="stIndexColumn"],
+    [data-testid="stDataFrame"] thead th:first-child {
+        background-color: #f8fafc !important;
+        color: #1e293b !important;
+        border-right: 1px solid #e2e8f0 !important;
+    }
+
+    [data-testid="stDataFrame"] tbody tr:hover {
+        background-color: #f1f5f9 !important;
+        transition: background-color 0.2s ease;
+    }
+
+    /* Download button */
     .stDownloadButton > button {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
         color: white !important;
@@ -288,45 +220,15 @@ st.markdown("""
         width: 100% !important;
         box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3) !important;
     }
-    
+
     .stDownloadButton > button:hover {
         transform: translateY(-2px) !important;
         box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4) !important;
     }
-    
-    /* Spinner */
-    .stSpinner > div {
-        border-top-color: #667eea !important;
-    }
-    
-    /* Remove default Streamlit colors from text */
-    .stMarkdown p, .stMarkdown li, .stMarkdown span {
-        color: #334155 !important;
-    }
-    
-    /* Sidebar specific text */
-    [data-testid="stSidebar"] .stMarkdown p,
-    [data-testid="stSidebar"] .stMarkdown li,
-    [data-testid="stSidebar"] .stMarkdown span {
-        color: #475569 !important;
-    }
-    
-    [data-testid="stSidebar"] h1,
-    [data-testid="stSidebar"] h2,
-    [data-testid="stSidebar"] h3 {
-        color: #1e293b !important;
-    }
-    
-    /* Caption styling */
-    .stCaption {
-        color: #64748b !important;
-    }
-    /* Ensure DataFrame text is visible (black) for Detailed Forecast and other tables */
-    .stDataFrame td, .stDataFrame th, .stDataFrame div {
-        color: #000000 !important;
-    }
+
 </style>
 """, unsafe_allow_html=True)
+
 
 # ------------------------
 # Comprehensive Location Database (Alphabetically Sorted)
