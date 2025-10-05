@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 streamlit
 pandas
 requests
@@ -6,3 +7,14 @@ matplotlib
 plotly
 scikit-learn
 earthaccess
+=======
+streamlit==1.49.1
+pandas==2.3.2
+requests==2.32.3
+numpy==2.3.2
+matplotlib==3.10.6
+plotly==6.3.1
+scikit-learn==1.7.2
+earthaccess==0.15.1
+
+>>>>>>> 4cbcb23 (Update requirements.txt with fixed package versions)
