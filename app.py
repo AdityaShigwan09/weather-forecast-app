@@ -115,7 +115,7 @@ st.markdown("""
     }
     
     /* OR if you want to style it instead of hiding: */
-    /*
+    
     [data-testid="collapsedControl"] {
         color: #667eea !important;
         background-color: #f8fafc !important;
@@ -124,7 +124,7 @@ st.markdown("""
     [data-testid="collapsedControl"]:hover {
         color: #764ba2 !important;
     }
-    */
+    
     
     /* Button styling */
     .stButton > button {
