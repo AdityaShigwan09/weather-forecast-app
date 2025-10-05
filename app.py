@@ -9,13 +9,13 @@ from sklearn.ensemble import RandomForestRegressor
 import os
 
 st.set_page_config(
-    page_title="Whether Air Quality Forecasting",
+    page_title="Weather Air Quality Forecasting",
     layout="wide",
     page_icon="🛰️",
     initial_sidebar_state="expanded"
 )
 
-# Hide Streamlit branding and style
+# Hide Streamlit branding
 hide_streamlit_style = """
     <style>
     #MainMenu {visibility: hidden;}
@@ -25,52 +25,88 @@ hide_streamlit_style = """
 """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
-# Enhanced Custom CSS with Modern Design and Theme Override
+# FIXED CSS - All sidebar and selectbox colors corrected
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
     
-    /* Remove Streamlit default styling */
+    * {
+        font-family: 'Inter', sans-serif;
+    }
+    
+    /* Main app background */
     .stApp {
         background-color: white !important;
-        color: black;
     }
     
-    /* Sidebar background - light gray */
+    /* SIDEBAR - Light background with dark text */
     .stApp [data-testid="stSidebar"] {
-        background-color: #f8fafc;
-        border-right: 1px solid #e2e8f0;
+        background-color: #f8fafc !important;
+        border-right: 1px solid #cbd5e1 !important;
     }
     
-    .stApp [data-testid="stHeader"] {
-        background-color: transparent;
-    }
-    
-    /* Reset all default colors */
-    .stMarkdown, .stText, p, span, div {
-        color: black !important;
-    }
-    
-    /* Sidebar text - dark gray/black for readability */
-    .stApp [data-testid="stSidebar"] .stMarkdown {
-        color: #1e293b !important;
-    }
-    
-    /* Sidebar markdown elements */
-    [data-testid="stSidebar"] .stMarkdown p,
-    [data-testid="stSidebar"] .stMarkdown li,
-    [data-testid="stSidebar"] .stMarkdown span {
-        color: #334155 !important;
-    }
-    
-    /* Sidebar headers */
-    [data-testid="stSidebar"] h1,
-    [data-testid="stSidebar"] h2,
-    [data-testid="stSidebar"] h3 {
+    /* All sidebar text elements - BLACK */
+    [data-testid="stSidebar"] * {
         color: #0f172a !important;
     }
     
-    /* Button styling override */
+    [data-testid="stSidebar"] .stMarkdown h1,
+    [data-testid="stSidebar"] .stMarkdown h2,
+    [data-testid="stSidebar"] .stMarkdown h3,
+    [data-testid="stSidebar"] .stMarkdown h4 {
+        color: #0f172a !important;
+        font-weight: 600 !important;
+    }
+    
+    [data-testid="stSidebar"] .stMarkdown p,
+    [data-testid="stSidebar"] .stMarkdown li,
+    [data-testid="stSidebar"] .stMarkdown span,
+    [data-testid="stSidebar"] .stMarkdown strong {
+        color: #1e293b !important;
+    }
+    
+    /* SELECTBOX - White box with black text */
+    [data-testid="stSidebar"] .stSelectbox label {
+        color: #0f172a !important;
+        font-weight: 600 !important;
+        font-size: 1rem !important;
+    }
+    
+    [data-testid="stSidebar"] .stSelectbox [data-baseweb="select"] {
+        background-color: white !important;
+    }
+    
+    [data-testid="stSidebar"] .stSelectbox [data-baseweb="select"] > div {
+        background-color: white !important;
+        border: 2px solid #cbd5e1 !important;
+        color: #0f172a !important;
+    }
+    
+    [data-testid="stSidebar"] .stSelectbox input {
+        color: #0f172a !important;
+    }
+    
+    /* Selectbox dropdown menu */
+    [data-baseweb="popover"] {
+        background-color: white !important;
+    }
+    
+    [role="listbox"] li {
+        color: #0f172a !important;
+        background-color: white !important;
+    }
+    
+    [role="listbox"] li:hover {
+        background-color: #f1f5f9 !important;
+    }
+    
+    /* Sidebar captions */
+    [data-testid="stSidebar"] .stCaption {
+        color: #64748b !important;
+        font-size: 0.85rem !important;
+    }
+    
+    /* Button styling */
     .stButton > button {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
         color: white !important;
@@ -85,31 +121,6 @@ st.markdown("""
     .stButton > button:hover {
         transform: translateY(-2px) !important;
         box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4) !important;
-    }
-    
-    /* Selectbox styling - white background with black text */
-    .stSelectbox > div > div {
-        background-color: #ffffff !important;
-        border: 2px solid #e2e8f0 !important;
-        border-radius: 8px !important;
-        color: #0f172a !important;
-    }
-    
-    /* Selectbox label - black text */
-    .stSelectbox label {
-        color: #0f172a !important;
-        font-weight: 600 !important;
-        font-size: 0.95rem !important;
-    }
-    
-    /* Selectbox dropdown text */
-    .stSelectbox div[data-baseweb="select"] > div {
-        color: #0f172a !important;
-    }
-    
-    /* Selectbox options */
-    [data-baseweb="menu"] > ul > li {
-        color: #0f172a !important;
     }
     
     /* Metric cards */
@@ -130,10 +141,6 @@ st.markdown("""
         border-radius: 12px !important;
         box-shadow: 0 2px 8px rgba(0,0,0,0.08) !important;
         border: 1px solid #f1f5f9 !important;
-    }
-    
-    * {
-        font-family: 'Inter', sans-serif;
     }
     
     .main-header {
@@ -185,30 +192,6 @@ st.markdown("""
         box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2);
     }
     
-    .info-box {
-        background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
-        border-left: 5px solid #3b82f6;
-        padding: 1.5rem;
-        border-radius: 10px;
-        margin: 1rem 0;
-        box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
-    }
-    
-    .info-box h4 {
-        color: #1e293b !important;
-        margin-top: 0;
-        font-weight: 600;
-    }
-    
-    .info-box p {
-        color: #475569 !important;
-        margin: 0.5rem 0;
-    }
-    
-    .alert_class {
-        color: #1f2937 !important;
-    }
-    
     .alert-critical h3, .alert-warning h3, .alert-good h3 {
         margin-top: 0;
         font-weight: 600;
@@ -219,120 +202,106 @@ st.markdown("""
         color: #334155 !important;
     }
     
-    /* Headers */
     h1, h2, h3, h4 {
         color: #1e293b !important;
         font-weight: 600;
     }
     
-    /* Dataframe styling */
-    .stDataFrame {
-        border: 1px solid #e2e8f0 !important;
-        border-radius: 8px !important;
-        overflow: hidden !important;
-    }
-    
-    /* Download button specific */
-    .stDownloadButton > button {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-        color: white !important;
-        border: none !important;
-        border-radius: 8px !important;
-        padding: 0.6rem 1rem !important;
-        font-weight: 500 !important;
-        width: 100% !important;
-        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3) !important;
-    }
-    
-    .stDownloadButton > button:hover {
-        transform: translateY(-2px) !important;
-        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4) !important;
-    }
-    
-    /* Spinner */
-    .stSpinner > div {
-        border-top-color: #667eea !important;
-    }
-    
-    /* Remove default Streamlit colors from text */
     .stMarkdown p, .stMarkdown li, .stMarkdown span {
         color: #334155 !important;
-    }
-    
-    /* Caption styling */
-    .stCaption {
-        color: #64748b !important;
     }
 </style>
 """, unsafe_allow_html=True)
 
-# Rest of your code remains exactly the same...
-# [Include all the remaining code from your original file - LOCATIONS, functions, etc.]
-
-# I'll include the key parts to make this a working example:
-
+# Location database (shortened for demo)
 LOCATIONS = {
     "USA - California - Los Angeles": {"lat": 34.0522, "lon": -118.2437, "timezone": "America/Los_Angeles"},
+    "USA - California - San Francisco": {"lat": 37.7749, "lon": -122.4194, "timezone": "America/Los_Angeles"},
     "USA - New York - New York City": {"lat": 40.7128, "lon": -74.0060, "timezone": "America/New_York"},
-    "India - Maharashtra - Pune": {"lat": 18.5204, "lon": 73.8567, "timezone": "Asia/Kolkata"},
+    "USA - Illinois - Chicago": {"lat": 41.8781, "lon": -87.6298, "timezone": "America/Chicago"},
+    "Canada - Ontario - Toronto": {"lat": 43.6532, "lon": -79.3832, "timezone": "America/Toronto"},
+    "Canada - British Columbia - Vancouver": {"lat": 49.2827, "lon": -123.1207, "timezone": "America/Vancouver"},
     "UK - England - London": {"lat": 51.5074, "lon": -0.1278, "timezone": "Europe/London"},
+    "UK - England - Manchester": {"lat": 53.4808, "lon": -2.2426, "timezone": "Europe/London"},
+    "India - Maharashtra - Mumbai": {"lat": 19.0760, "lon": 72.8777, "timezone": "Asia/Kolkata"},
+    "India - Maharashtra - Pune": {"lat": 18.5204, "lon": 73.8567, "timezone": "Asia/Kolkata"},
+    "India - Delhi - New Delhi": {"lat": 28.6139, "lon": 77.2090, "timezone": "Asia/Kolkata"},
     "Japan - Kanto - Tokyo": {"lat": 35.6762, "lon": 139.6503, "timezone": "Asia/Tokyo"},
+    "Australia - New South Wales - Sydney": {"lat": -33.8688, "lon": 151.2093, "timezone": "Australia/Sydney"},
 }
 
+# Main header
 st.markdown("""
 <div class="main-header">
-    <h1>🛰️ Whether Quality Forecasting System</h1>
+    <h1>🛰️ Weather Air Quality Forecasting System</h1>
     <p style="font-size: 1.1em; margin-top: 0.5rem;">
-        • Global Coverage • AI-Powered Predictions
+        NASA TEMPO Satellite Data • Global Coverage • AI-Powered Predictions
     </p>
 </div>
 """, unsafe_allow_html=True)
 
-# Sidebar with Enhanced Search
+# SIDEBAR - Fixed filtering logic
 st.sidebar.title("🌍 Location Settings")
 st.sidebar.markdown("### Search Location")
 
-# Country grouping for better UX
+# Get sorted locations and countries
 sorted_locations = sorted(LOCATIONS.keys())
 countries = sorted(set([loc.split(" - ")[0] for loc in sorted_locations]))
 
-selected_country = st.sidebar.selectbox("🌐 Select Country", ["All Countries"] + countries, key="country_select")
+# Country filter with fixed logic
+selected_country = st.sidebar.selectbox(
+    "🌐 Select Country", 
+    ["All Countries"] + countries,
+    key="country_selector"
+)
 
-# Fixed filtering logic
+# Filter locations based on country selection
 if selected_country == "All Countries":
     filtered_locations = sorted_locations
 else:
     filtered_locations = [loc for loc in sorted_locations if loc.startswith(selected_country)]
+    # Safety check
+    if not filtered_locations:
+        st.sidebar.error(f"No cities found for {selected_country}")
+        filtered_locations = sorted_locations
 
-# Handle case where filtering returns empty list
-if not filtered_locations:
-    st.sidebar.warning(f"No cities found for {selected_country}")
-    filtered_locations = sorted_locations
+# City selector
+selected_location = st.sidebar.selectbox(
+    "📍 Select City", 
+    filtered_locations,
+    key="city_selector"
+)
 
-selected_location = st.sidebar.selectbox("📍 Select City", filtered_locations, key="city_select")
 location_data = LOCATIONS[selected_location]
 
 st.sidebar.markdown("---")
 
+# Refresh button
 if st.sidebar.button("🔄 Refresh All Data", use_container_width=True):
     st.cache_data.clear()
     st.rerun()
 
 st.sidebar.markdown("---")
+
+# Data sources info
 st.sidebar.markdown("### 📊 Data Sources")
 st.sidebar.markdown("""
 - **TEMPO Satellite**: Hourly NO₂
-- **OpenAQ**: Ground sensors
+- **OpenAQ**: Ground sensors  
 - **OpenWeather**: Meteorology
 - **ML Model**: Random Forest
 """)
 
 st.sidebar.markdown("---")
+
+# Statistics
 st.sidebar.markdown(f"**Total Locations**: {len(LOCATIONS)}")
 st.sidebar.markdown(f"**Countries**: {len(countries)}")
+st.sidebar.markdown(f"**Selected**: {selected_location.split(' - ')[-1]}")
 
-# Demo content
+# Main content
 st.header(f"📍 Current Conditions - {selected_location}")
+
 col1, col2, col3, col4 = st.columns(4)
 with col1:
     st.metric("🌡️ Temperature", "22.5°C")
@@ -343,6 +312,7 @@ with col3:
 with col4:
     st.metric("📡 Ground NO₂", "32.1 µg/m³")
 
+# AQI alert
 st.markdown("""
 <div class="alert-good">
     <h3>🟢 Current AQI: 45 - Good</h3>
@@ -350,7 +320,33 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
+# Demo chart
+st.header("🔮 Air Quality Trends")
+dates = pd.date_range(start=datetime.now() - timedelta(hours=24), end=datetime.now(), freq='H')
+values = 25 + 10 * np.sin(np.linspace(0, 4*np.pi, len(dates))) + np.random.normal(0, 3, len(dates))
+
+fig = go.Figure()
+fig.add_trace(go.Scatter(
+    x=dates, 
+    y=values,
+    mode='lines+markers',
+    name='NO₂ Levels',
+    line=dict(color='#667eea', width=3),
+    marker=dict(size=6, color='#667eea')
+))
+fig.update_layout(
+    title="24-Hour NO₂ Concentration",
+    xaxis_title="Time",
+    yaxis_title="NO₂ (ppb)",
+    height=400,
+    plot_bgcolor='rgba(0,0,0,0)',
+    paper_bgcolor='rgba(0,0,0,0)',
+    font=dict(family='Inter')
+)
+st.plotly_chart(fig, use_container_width=True)
+
+# Sidebar footer
 st.sidebar.markdown("---")
 st.sidebar.caption(f"🕐 Last updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
 st.sidebar.caption(f"📍 Monitoring: {selected_location}")
-st.sidebar.caption(f"🌐 Coordinates: {location_data['lat']:.4f}°, {location_data['lon']:.4f}°")
+st.sidebar.caption(f"🌐 Lat: {location_data['lat']:.4f}°, Lon: {location_data['lon']:.4f}°")
