@@ -9,7 +9,7 @@ from sklearn.ensemble import RandomForestRegressor
 import os
 
 st.set_page_config(
-    page_title="Whether Quality Forecasting",
+    page_title="Weather Quality Forecasting",
     layout="wide",
     page_icon="🛰️",
     initial_sidebar_state="expanded"
@@ -694,7 +694,7 @@ def get_health_message(aqi, category):
 # ------------------------
 st.markdown("""
 <div class="main-header">
-    <h1>🛰️ Whether Quality Forecasting System</h1>
+    <h1>🛰️ Weather Quality Forecasting System</h1>
     <p style="font-size: 1.1em; margin-top: 0.5rem;">
         • Global Coverage • AI-Powered Predictions
     </p>
